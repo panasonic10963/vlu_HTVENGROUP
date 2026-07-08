@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Một trang editorial tối giản về Linux.">
+  <title>Linux - Open Infrastructure</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,350;9..144,500;9..144,650&display=swap");
+
+    :root {
+      --paper: #f8f4ec;
+      --paper-soft: #fffdf8;
+      --ink: #151923;
+      --muted: rgba(21, 25, 35, 0.56);
+      --hairline: rgba(21, 25, 35, 0.16);
+      --accent: #8e4638;
+      --max: 1160px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(142, 70, 56, 0.05) 1px, transparent 1px) 0 0 / 10vw 100%,
+        var(--paper);
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 16px;
+      line-height: 1.2;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-color: var(--accent);
+      text-decoration-thickness: 0.08em;
+      text-underline-offset: 0.2em;
+    }
+
+    main,
+    footer {
+      width: min(100% - 32px, var(--max));
+      margin-inline: auto;
+    }
+
+    section,
+    footer {
+      position: relative;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero {
+      display: grid;
+      min-height: 100svh;
+      align-items: center;
+      padding-block: clamp(96px, 18vw, 184px) clamp(72px, 10vw, 132px);
+    }
+
+    .hero h1 {
+      width: min(11.4ch, 100%);
+      margin: 0;
+      font-size: clamp(4rem, 15vw, 13.5rem);
+      font-weight: 500;
+      line-height: 0.9;
+      letter-spacing: 0;
+    }
+
+    .hero h1 em {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    .timeline {
+      padding-block: clamp(72px, 12vw, 136px);
+      border-top: 1px solid var(--hairline);
+    }
+
+    .timeline__track {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(8.5rem, 1fr));
+      gap: 0;
+      min-width: 46rem;
+      padding-block: 18px 4px;
+    }
+
+    .timeline__scroll {
+      overflow-x: auto;
+      padding-bottom: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) transparent;
+    }
+
+    .moment {
+      position: relative;
+      min-height: 108px;
+      padding-right: 18px;
+      border-top: 1px solid var(--ink);
+    }
+
+    .moment::before {
+      content: "";
+      position: absolute;
+      top: -7px;
+      left: 0;
+      width: 13px;
+      height: 13px;
+      border-radius: 999px;
+      background: var(--paper);
+      border: 2px solid var(--accent);
+    }
+
+    .moment__year {
+      display: block;
+      margin-top: 28px;
+      color: var(--accent);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 650;
+      line-height: 1;
+    }
+
+    .moment__label {
+      display: block;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.35vw, 1.2rem);
+      font-weight: 350;
+      white-space: nowrap;
+    }
+
+    .pillars {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      padding-block: clamp(72px, 12vw, 136px);
+      border-top: 1px solid var(--hairline);
+    }
+
+    .pillar {
+      min-height: 260px;
+      padding: clamp(28px, 5vw, 48px);
+      background: var(--paper-soft);
+    }
+
+    .pillar svg {
+      display: block;
+      width: 56px;
+      height: 56px;
+      margin-bottom: clamp(40px, 7vw, 84px);
+      overflow: visible;
+    }
+
+    .pillar svg * {
+      vector-effect: non-scaling-stroke;
+    }
+
+    .pillar h2 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 4.5rem);
+      font-weight: 500;
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .pillar p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.45vw, 1.25rem);
+      font-weight: 350;
+    }
+
+    .quote {
+      display: grid;
+      min-height: 80svh;
+      align-items: center;
+      padding-block: clamp(84px, 14vw, 164px);
+      border-top: 1px solid var(--hairline);
+    }
+
+    .quote blockquote {
+      max-width: 12.5ch;
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(3.2rem, 10.8vw, 9.5rem);
+      font-weight: 500;
+      line-height: 0.94;
+      letter-spacing: 0;
+    }
+
+    .quote blockquote::before {
+      content: open-quote;
+      color: var(--accent);
+    }
+
+    .quote blockquote::after {
+      content: close-quote;
+      color: var(--accent);
+    }
+
+    footer {
+      padding-block: 30px 42px;
+      border-top: 1px solid var(--hairline);
+      color: var(--muted);
+      font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+      font-weight: 350;
+    }
+
+    @media (min-width: 740px) {
+      main,
+      footer {
+        width: min(100% - 72px, var(--max));
+      }
+
+      .hero h1 {
+        margin-left: 7vw;
+      }
+
+      .timeline__track {
+        min-width: 0;
+      }
+
+      .pillars {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .pillar {
+        min-height: 420px;
+      }
+
+      .quote blockquote {
+        margin-left: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero reveal" aria-label="Định nghĩa Linux">
+      <h1>Linux là hạ tầng mở: nhỏ như một <em>kernel</em>, lớn như Internet.</h1>
+    </section>
+
+    <section class="timeline reveal" aria-label="Dải thời gian Linux">
+      <div class="timeline__scroll" tabindex="0" aria-label="Dải thời gian cuộn ngang">
+        <div class="timeline__track">
+          <div class="moment">
+            <span class="moment__year">1983</span>
+            <span class="moment__label">GNU bắt đầu</span>
+          </div>
+          <div class="moment">
+            <span class="moment__year">1991</span>
+            <span class="moment__label">Kernel ra đời</span>
+          </div>
+          <div class="moment">
+            <span class="moment__year">1992</span>
+            <span class="moment__label">GPL lan rộng</span>
+          </div>
+          <div class="moment">
+            <span class="moment__year">1993</span>
+            <span class="moment__label">Distro hóa</span>
+          </div>
+          <div class="moment">
+            <span class="moment__year">2026</span>
+            <span class="moment__label">Cloud + edge</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pillars reveal" aria-label="Ba trụ cột Linux">
+      <article class="pillar">
+        <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <path d="M18 32a14 14 0 1 1 27 5" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M45 37l6 1-2-6" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M30 21v13h13" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h2>Free</h2>
+        <p>Tự do dùng.</p>
+      </article>
+      <article class="pillar">
+        <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <circle cx="18" cy="22" r="6" fill="none" stroke="var(--accent)" stroke-width="2"/>
+          <circle cx="46" cy="18" r="6" fill="none" stroke="var(--ink)" stroke-width="2"/>
+          <circle cx="42" cy="46" r="6" fill="none" stroke="var(--ink)" stroke-width="2"/>
+          <path d="M24 22l16-4M22 27l16 15" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <h2>Open Source</h2>
+        <p>Mở để tin.</p>
+      </article>
+      <article class="pillar">
+        <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <path d="M14 20h36M14 32h36M14 44h36" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="27" cy="20" r="5" fill="var(--paper-soft)" stroke="var(--accent)" stroke-width="2"/>
+          <circle cx="42" cy="32" r="5" fill="var(--paper-soft)" stroke="var(--accent)" stroke-width="2"/>
+          <circle cx="23" cy="44" r="5" fill="var(--paper-soft)" stroke="var(--accent)" stroke-width="2"/>
+        </svg>
+        <h2>Customizable</h2>
+        <p>Tùy biến sâu.</p>
+      </article>
+    </section>
+
+    <section class="quote reveal" aria-label="Triết lý mã nguồn mở">
+      <blockquote>Phần mềm tốt không khóa cửa; nó để người dùng giữ chìa khóa.</blockquote>
+    </section>
+  </main>
+
+  <footer class="reveal">
+    Linux, như một ý tưởng mở. <a href="https://github.com/torvalds/linux" rel="noreferrer">GitHub</a>
+  </footer>
+
+  <script>
+    const revealTargets = document.querySelectorAll(".reveal");
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18 });
+
+      revealTargets.forEach((target) => observer.observe(target));
+    } else {
+      revealTargets.forEach((target) => target.classList.add("is-visible"));
+    }
+  </script>
+</body>
+</html>
